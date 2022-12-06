@@ -311,6 +311,7 @@ void MainWindow::shutdown() {
     ui->userDropdown->setEnabled(false);
     ui->addUserButton->setEnabled(false);
     ui->endSessionButton->setEnabled(false);
+    ui->currentUserText->setText("");
 
     ui->powerLabel->setStyleSheet("");
     ui->twentyMin->setStyleSheet("");
