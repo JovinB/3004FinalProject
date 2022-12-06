@@ -30,6 +30,7 @@ public:
 
     bool addUser(QString);
     void reset();
+    void saveRecord(int);
 
 
 private:

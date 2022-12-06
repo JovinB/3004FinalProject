@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QElapsedTimer>
 #include "control.h"
 
 QT_BEGIN_NAMESPACE
@@ -23,6 +24,7 @@ private:
     QPalette redPalette;
     QPalette bluePalette;
     int noUser;
+    QElapsedTimer sessionTimer;
 
     void flashIntensityNumber(int);
     void wait(int);

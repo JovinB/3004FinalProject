@@ -59,6 +59,12 @@ User* Control::getUser(QString name) {
     return NULL;
 }
 
+void Control::saveRecord(int duration) {
+    User* user = getUser(currentUser);
+    Record* new_record = new Record(user->getNumRecords()+1, getCurrentSession()->getName(), getCurrentSession()->getGroupName(),duration,getIntensity());
+    user->addRecord(new_record);
+}
+
 void Control::reset() {
     powerOn = false;
     selectingSession = false;

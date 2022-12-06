@@ -1,22 +1,22 @@
 #include "record.h"
+#include <QDebug>
 
-Record::Record(int recordId, const QString& sessionType, int duration, int intensityLevel){
-    if (startTime.isValid()) {
-        this->recordId = recordId;
-        this->sessionType = sessionType;
-        this->duration = duration;
-        this->intensityLevel = intensityLevel;
-        // this->startTime = startTime;
-    }
+Record::Record(int recordId, QString sessionName, QString sessionGroup, int duration, int intensityLevel) {
+    this->recordId = recordId;
+    this->sessionName = sessionName;
+    this->sessionGroup = sessionGroup;
+    this->duration = duration;
+    this->intensityLevel = intensityLevel;
+    qDebug() << "RecordId: " << recordId <<"Session Name: " << sessionName <<"Session Group: " << sessionGroup << "Duration: " << duration << "Intensity: " << intensityLevel;
 }
 
 
 // getters
 int Record::getRecordId() { return recordId; }
-QString Record::getSessionType() { return sessionType; }
+QString Record::getSessionName() { return sessionName; }
+QString Record::getSessionGroup() { return sessionGroup; }
 int Record::getDuration() { return duration; }
 int Record::getIntensityLevel() { return intensityLevel; }
-QDateTime Record::getStartTime() { return startTime; }
 
 // setters
 // void Record::setIntensityLevel(int newIntensity) { intensityLevel = newIntensity; }

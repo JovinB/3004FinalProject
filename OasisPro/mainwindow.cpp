@@ -161,6 +161,7 @@ void MainWindow::selectButtonPressed() {
     ui->endSessionButton->setEnabled(true);
     ui->saveRecordButton->setEnabled(true);
     ui->selectUser->setEnabled(false);
+    sessionTimer.start();
 
     if(ui->twentyMin->styleSheet() == "background-color: red;") {
         sessionName = "twentyMin";
@@ -294,9 +295,7 @@ void MainWindow::currentUser() {
 }
 
 void MainWindow::saveRecord() {
-    User* user = control->getUser(control->getCurrentUser());
-    Record* new_record = new Record(user->getNumRecords()+1, control->getCurrentSession()->getName(),0,0);
-    user->addRecord(new_record);
+    control->saveRecord(sessionTimer.elapsed());
 }
 
 void MainWindow::shutdown() {
