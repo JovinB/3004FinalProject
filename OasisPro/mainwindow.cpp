@@ -52,13 +52,13 @@ void MainWindow::powerButtonPressed() {
 
             ui->upButton->setEnabled(true);
             ui->downButton->setEnabled(true);
-            ui->selectButton->setEnabled(true);
             ui->skinCheckBox->setEnabled(true);
-            ui->selectUser->setEnabled(true);
-            ui->saveRecordButton->setEnabled(true);
             ui->userDropdown->setEnabled(true);
             ui->addUserButton->setEnabled(true);
-            ui->endSessionButton->setEnabled(true);
+
+            if(control->getNumUsers() > 0) { ui->selectUser->setEnabled(true); }
+
+
 
             ui->powerLabel->setStyleSheet("background-color: green;");
             ui->twentyMin->setStyleSheet("background-color: red;");
@@ -154,37 +154,39 @@ void MainWindow::downButtonPressed() {
 }
 
 void MainWindow::selectButtonPressed() {
-    if(control->isSelectingSession()) {
-        QString sessionName = "";
-        QString groupName = "";
-        control->stopSelectingSession();
+    QString sessionName;
+    QString groupName;
+    control->stopSelectingSession();
+    ui->selectButton->setEnabled(false);
+    ui->endSessionButton->setEnabled(true);
+    ui->saveRecordButton->setEnabled(true);
+    ui->selectUser->setEnabled(false);
 
-        if(ui->twentyMin->styleSheet() == "background-color: red;") {
-            sessionName = "twentyMin";
-        }
-        else if(ui->fortyfiveMin->styleSheet() == "background-color: red;") {
-            sessionName = "fortyfiveMin";
-        }
-        else {
-            sessionName = "userDesigned";
-        }
-
-        if(ui->delta->styleSheet() == "background-color: red;") {
-            groupName = "delta";
-        }
-        else if(ui->theta->styleSheet() == "background-color: red;") {
-            groupName = "theta";
-        }
-        else if(ui->alpha->styleSheet() == "background-color: red;") {
-            groupName = "alpha";
-        }
-        else {
-            groupName = "beta1";
-        }
-
-        control->setCurrentSession(sessionName, groupName);
-        Timer->start();
+    if(ui->twentyMin->styleSheet() == "background-color: red;") {
+        sessionName = "twentyMin";
     }
+    else if(ui->fortyfiveMin->styleSheet() == "background-color: red;") {
+        sessionName = "fortyfiveMin";
+    }
+    else {
+        sessionName = "userDesigned";
+    }
+
+    if(ui->delta->styleSheet() == "background-color: red;") {
+        groupName = "delta";
+    }
+    else if(ui->theta->styleSheet() == "background-color: red;") {
+        groupName = "theta";
+    }
+    else if(ui->alpha->styleSheet() == "background-color: red;") {
+        groupName = "alpha";
+    }
+    else {
+        groupName = "beta1";
+    }
+
+    control->setCurrentSession(sessionName, groupName);
+    Timer->start();
 }
 
 void MainWindow::skinCheckBoxUpdate() {
@@ -280,13 +282,15 @@ void MainWindow::addUser() {
     QString userName = "User " + s;
     ui->userDropdown->addItem(userName);
     control->addUser(userName);
+    ui->selectUser->setEnabled(true);
 }
 
 void MainWindow::currentUser() {
     control->setCurrentUser(ui->userDropdown->currentText());
     ui->currentUserText->setText(ui->userDropdown->currentText());
-    ui->userDropdown->setDisabled(true);
-
+    ui->userDropdown->setEnabled(false);
+    ui->addUserButton->setEnabled(false);
+    ui->selectButton->setEnabled(true);
 }
 
 void MainWindow::saveRecord() {
