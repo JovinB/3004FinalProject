@@ -1,5 +1,8 @@
 #ifndef CONTROL_H
 #define CONTROL_H
+#include <QList>
+#include "user.h"
+#include "session.h"
 
 
 class Control {
@@ -10,6 +13,11 @@ public:
     bool isPowerOn();
     bool isSelectingSession();
     int getIntensity();
+    int getNumUsers();
+    User* getUser(QString);
+    QString getCurrentUser();
+    Session* getCurrentSession();
+
 
     // setters
     void turnOn();
@@ -17,11 +25,22 @@ public:
     void startSelectingSession();
     void stopSelectingSession();
     void setIntensity(int);
+    void setCurrentUser(QString);
+    void setCurrentSession(QString,QString);
+
+    bool addUser(QString);
+
 
 private:
     bool powerOn;
     bool selectingSession;
     int intensity; // from 1-8
+    int userId;
+    QVector<User*> users;
+    int numUsers;
+    QString currentUser;
+    Session* currentSession;
+
 
 };
 

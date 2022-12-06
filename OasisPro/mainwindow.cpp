@@ -2,18 +2,40 @@
 #include "ui_mainwindow.h"
 #include <unistd.h>
 #include <QTimer>
+#include <QDateTime>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     control = new Control();
+    Timer = new QTimer(this);
+    blinkTimer = new QTimer(this);
+    noUser = 0;
+
+    redPalette = this->palette();
+    redPalette.setColor(QPalette::Highlight, QColor(Qt::red));
+    bluePalette = this->palette();
+    bluePalette.setColor(QPalette::Highlight, QColor(Qt::blue));
 
     ui->setupUi(this);
+
+    ui->progressBar->setPalette(bluePalette);
+
+    connect(Timer, SIGNAL(timeout()), this, SLOT(depleteBattery()));
+    Timer->setInterval(1700);
+    connect(blinkTimer, SIGNAL(timeout()), this, SLOT(blinkBattery()));
+    blinkTimer->setInterval(300);
 
     connect(ui->powerButton, SIGNAL(released()), this, SLOT(powerButtonPressed()));
     connect(ui->upButton, SIGNAL(released()), this, SLOT(upButtonPressed()));
     connect(ui->downButton, SIGNAL(released()), this, SLOT(downButtonPressed()));
     connect(ui->selectButton, SIGNAL(released()), this, SLOT(selectButtonPressed()));
+    connect(ui->rechargeButton, SIGNAL(released()), this, SLOT(recharge()));
+    connect(ui->skinCheckBox, SIGNAL(stateChanged(int)), this, SLOT(skinCheckBoxUpdate()));
+    connect(ui->addUserButton, SIGNAL(released()), this, SLOT(addUser()));
+    connect(ui->selectUser, SIGNAL(released()), this, SLOT(currentUser()));
+    connect(ui->saveRecordButton, SIGNAL(released()), this, SLOT(saveRecord()));
+
 
 }
 
@@ -78,6 +100,7 @@ void MainWindow::upButtonPressed() {
         else {
             flashIntensityNumber(currentIntensity+1);
             control->setIntensity(currentIntensity+1);
+            Timer->setInterval((Timer->interval()) - 200);
         }
     }
 }
@@ -109,13 +132,51 @@ void MainWindow::downButtonPressed() {
         else {
             flashIntensityNumber(currentIntensity-1);
             control->setIntensity(currentIntensity-1);
+            Timer->setInterval((Timer->interval()) + 200);
         }
     }
 }
 
 void MainWindow::selectButtonPressed() {
     if(control->isSelectingSession()) {
+        QString sessionName = "";
+        QString groupName = "";
         control->stopSelectingSession();
+
+        if(ui->twentyMin->styleSheet() == "background-color: red;") {
+            sessionName = "twentyMin";
+        }
+        else if(ui->fortyfiveMin->styleSheet() == "background-color: red;") {
+            sessionName = "fortyfiveMin";
+        }
+        else {
+            sessionName = "userDesigned";
+        }
+
+        if(ui->delta->styleSheet() == "background-color: red;") {
+            groupName = "delta";
+        }
+        else if(ui->theta->styleSheet() == "background-color: red;") {
+            groupName = "theta";
+        }
+        else if(ui->alpha->styleSheet() == "background-color: red;") {
+            groupName = "alpha";
+        }
+        else {
+            groupName = "beta1";
+        }
+
+        control->setCurrentSession(sessionName, groupName);
+        Timer->start();
+    }
+}
+
+void MainWindow::skinCheckBoxUpdate() {
+    if(ui->skinCheckBox->isChecked()) {
+        Timer->setInterval(Timer->interval() - 200);
+    }
+    else {
+        Timer->setInterval(Timer->interval() + 200);
     }
 }
 
@@ -171,4 +232,46 @@ void MainWindow::wait(int milliseconds) {
     t.connect(&t, &QTimer::timeout, &loop, &QEventLoop::quit);
     t.start(milliseconds);
     loop.exec();
+}
+
+void MainWindow:: recharge(){
+    ui->progressBar->setValue(100);
+    blinkTimer->stop();
+    ui->progressBar->setPalette(bluePalette);
+}
+
+void MainWindow:: depleteBattery(){
+    ui->progressBar->setValue((ui->progressBar->value())-1);
+    if(!blinkTimer->isActive() && ui->progressBar->value() < 30) {
+        blinkTimer->start();
+    }
+}
+
+void MainWindow::blinkBattery() {
+    if(ui->progressBar->palette() == bluePalette) {
+        ui->progressBar->setPalette(redPalette);
+    }
+    else {
+        ui->progressBar->setPalette(bluePalette);
+    }
+}
+
+void MainWindow::addUser() {
+    QString s = QString::number(control->getNumUsers()+1);
+    QString userName = "User " + s;
+    ui->userDropdown->addItem(userName);
+    control->addUser(userName);
+}
+
+void MainWindow::currentUser() {
+    control->setCurrentUser(ui->userDropdown->currentText());
+    ui->currentUserText->setText(ui->userDropdown->currentText());
+    ui->userDropdown->setDisabled(true);
+
+}
+
+void MainWindow::saveRecord() {
+    User* user = control->getUser(control->getCurrentUser());
+    Record* new_record = new Record(user->getNumRecords()+1, control->getCurrentSession()->getName(),0,0);
+    user->addRecord(new_record);
 }

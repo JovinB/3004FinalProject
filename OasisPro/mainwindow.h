@@ -20,11 +20,24 @@ private:
     Control *control;
     void flashIntensityNumber(int);
     void wait(int);
+    QTimer *Timer;
+    QTimer *blinkTimer;
+    QPalette redPalette;
+    QPalette bluePalette;
+    int noUser;
+
 
 private slots:
     void powerButtonPressed();
     void upButtonPressed();
     void downButtonPressed();
     void selectButtonPressed();
+    void skinCheckBoxUpdate();
+    void recharge();
+    void depleteBattery();
+    void blinkBattery();
+    void addUser();
+    void currentUser();
+    void saveRecord();
 };
 #endif // MAINWINDOW_H
