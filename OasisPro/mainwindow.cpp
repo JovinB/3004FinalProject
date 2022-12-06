@@ -48,6 +48,19 @@ void MainWindow::powerButtonPressed() {
     if(!control->isPowerOn()) {
         control->turnOn();
         control->startSelectingSession();
+
+        ui->upButton->setEnabled(true);
+        ui->downButton->setEnabled(true);
+        ui->selectButton->setEnabled(true);
+        ui->rechargeButton->setEnabled(true);
+        ui->skinCheckBox->setEnabled(true);
+        ui->selectUser->setEnabled(true);
+        ui->saveRecordButton->setEnabled(true);
+        ui->userDropdown->setEnabled(true);
+        ui->progressBar->setEnabled(true);
+        ui->addUserButton->setEnabled(true);
+        ui->endSessionButton->setEnabled(true);
+
         ui->powerLabel->setStyleSheet("background-color: green;");
         ui->twentyMin->setStyleSheet("background-color: red;");
         ui->fortyfiveMin->setStyleSheet("background-color: green;");

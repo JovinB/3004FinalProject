@@ -119,6 +119,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="upButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>440</x>
@@ -132,6 +135,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="downButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>440</x>
@@ -158,6 +164,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="selectButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>79</x>
@@ -168,6 +177,9 @@
     </property>
     <property name="text">
      <string>Select Session</string>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
     </property>
    </widget>
    <widget class="QLabel" name="powerLabel">
@@ -336,6 +348,9 @@
     </property>
    </widget>
    <widget class="QProgressBar" name="progressBar">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>577</x>
@@ -389,6 +404,9 @@
      </property>
     </widget>
     <widget class="QPushButton" name="rechargeButton">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>110</x>
@@ -402,6 +420,9 @@
      </property>
     </widget>
     <widget class="QCheckBox" name="skinCheckBox">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>70</x>
@@ -416,6 +437,9 @@
     </widget>
    </widget>
    <widget class="QComboBox" name="userDropdown">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>690</x>
@@ -426,6 +450,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="addUserButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>580</x>
@@ -452,6 +479,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="selectUser">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>580</x>
@@ -478,6 +508,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="endSessionButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>180</x>
@@ -491,6 +524,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="saveRecordButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>580</x>
