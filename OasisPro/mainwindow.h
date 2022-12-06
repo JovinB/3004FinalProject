@@ -29,6 +29,8 @@ private:
     void flashIntensityNumber(int);
     void wait(int);
     void shutdown();
+    void highlightSessionGroup(QString);
+    void highlightSessionName(QString);
 
 
 private slots:
@@ -43,6 +45,7 @@ private slots:
     void addUser();
     void currentUser();
     void saveRecord();
+    void selectRecord();
     void endSession();
 };
 #endif // MAINWINDOW_H

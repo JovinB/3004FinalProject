@@ -3,6 +3,7 @@
 #include <string>
 #include <QDateTime>
 #include <QTimer>
+#include <QDebug>
 
 using namespace std;
 

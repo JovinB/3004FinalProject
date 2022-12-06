@@ -15,6 +15,7 @@ public:
     int getIntensity();
     int getNumUsers();
     User* getUser(QString);
+    Record* fetchRecord(QString);
     QString getCurrentUser();
     Session* getCurrentSession();
 

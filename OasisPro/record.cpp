@@ -1,5 +1,4 @@
 #include "record.h"
-#include <QDebug>
 
 Record::Record(QString recordName, QString sessionName, QString sessionGroup, int duration, int intensityLevel) {
     this->recordName = recordName;

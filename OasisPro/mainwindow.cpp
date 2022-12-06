@@ -36,6 +36,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->selectUser, SIGNAL(released()), this, SLOT(currentUser()));
     connect(ui->saveRecordButton, SIGNAL(released()), this, SLOT(saveRecord()));
     connect(ui->endSessionButton,SIGNAL(released()), this, SLOT(endSession()));
+    connect(ui->selectRecord,SIGNAL(released()), this, SLOT(selectRecord()));
 
 
 }
@@ -165,26 +166,26 @@ void MainWindow::selectButtonPressed() {
     sessionTimer.start();
 
     if(ui->twentyMin->styleSheet() == "background-color: red;") {
-        sessionName = "twentyMin";
+        groupName = "twentyMin";
     }
     else if(ui->fortyfiveMin->styleSheet() == "background-color: red;") {
-        sessionName = "fortyfiveMin";
+        groupName = "fortyfiveMin";
     }
     else {
-        sessionName = "userDesigned";
+        groupName = "userDesigned";
     }
 
     if(ui->delta->styleSheet() == "background-color: red;") {
-        groupName = "delta";
+        sessionName = "delta";
     }
     else if(ui->theta->styleSheet() == "background-color: red;") {
-        groupName = "theta";
+        sessionName = "theta";
     }
     else if(ui->alpha->styleSheet() == "background-color: red;") {
-        groupName = "alpha";
+        sessionName = "alpha";
     }
     else {
-        groupName = "beta1";
+        sessionName = "beta1";
     }
 
     control->setCurrentSession(sessionName, groupName);
@@ -297,10 +298,21 @@ void MainWindow::currentUser() {
     ui->recordDropdown->setEnabled(true);
     ui->selectRecord->setEnabled(true);
 
+    User* currUser = control->getUser(control->getCurrentUser());
+    QVector<Record*> records = currUser->getRecords();
+    for(int i = 0; i < currUser->getNumRecords(); i++) {
+        ui->recordDropdown->addItem(records[i]->getRecordName());
+    }
 }
 
 void MainWindow::saveRecord() {
     control->saveRecord(sessionTimer.elapsed());
+}
+
+void MainWindow::selectRecord() {
+    Record* currRecord = control->fetchRecord(ui->recordDropdown->currentText());
+    highlightSessionGroup(currRecord->getSessionGroup());
+    highlightSessionName(currRecord->getSessionName());
 }
 
 void MainWindow::shutdown() {
@@ -316,7 +328,10 @@ void MainWindow::shutdown() {
     ui->userDropdown->setEnabled(false);
     ui->addUserButton->setEnabled(false);
     ui->endSessionButton->setEnabled(false);
+    ui->selectRecord->setEnabled(false);
+    ui->recordDropdown->setEnabled(false);
     ui->currentUserText->setText("");
+    ui->recordDropdown->clear();
 
     ui->powerLabel->setStyleSheet("");
     ui->twentyMin->setStyleSheet("");
@@ -339,5 +354,51 @@ void MainWindow::endSession(){
     shutdown();
 }
 
+void MainWindow::highlightSessionGroup(QString groupName) {
+    qDebug() << groupName;
+    if(groupName == "twentyMin") {
+        ui->twentyMin->setStyleSheet("background-color: red;");
+        ui->fortyfiveMin->setStyleSheet("background-color: green;");
+        ui->userDes->setStyleSheet("background-color: green;");
+    }
+    else if(groupName == "fortyfiveMin") {
+        ui->twentyMin->setStyleSheet("background-color: green;");
+        ui->fortyfiveMin->setStyleSheet("background-color: red;");
+        ui->userDes->setStyleSheet("background-color: green;");
+    }
+    else {
+        ui->twentyMin->setStyleSheet("background-color: green;");
+        ui->fortyfiveMin->setStyleSheet("background-color: green;");
+        ui->userDes->setStyleSheet("background-color: red;");
+    }
+}
+
+void MainWindow::highlightSessionName(QString sessionName) {
+    qDebug() << sessionName;
+    if(sessionName == "delta") {
+        ui->delta->setStyleSheet("background-color: red;");
+        ui->theta->setStyleSheet("background-color: green;");
+        ui->alpha->setStyleSheet("background-color: green;");
+        ui->beta1->setStyleSheet("background-color: green;");
+    }
+    else if(sessionName == "theta") {
+        ui->delta->setStyleSheet("background-color: green;");
+        ui->theta->setStyleSheet("background-color: red;");
+        ui->alpha->setStyleSheet("background-color: green;");
+        ui->beta1->setStyleSheet("background-color: green;");
+    }
+    else if(sessionName == "alpha") {
+        ui->delta->setStyleSheet("background-color: green;");
+        ui->theta->setStyleSheet("background-color: green;");
+        ui->alpha->setStyleSheet("background-color: red;");
+        ui->beta1->setStyleSheet("background-color: green;");
+    }
+    else {
+        ui->delta->setStyleSheet("background-color: green;");
+        ui->theta->setStyleSheet("background-color: green;");
+        ui->alpha->setStyleSheet("background-color: green;");
+        ui->beta1->setStyleSheet("background-color: red;");
+    }
+}
 
 
