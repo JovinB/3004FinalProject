@@ -29,6 +29,7 @@ public:
     void setCurrentSession(QString,QString);
 
     bool addUser(QString);
+    void reset();
 
 
 private:

@@ -18,13 +18,15 @@ public:
 private:
     Ui::MainWindow *ui;
     Control *control;
-    void flashIntensityNumber(int);
-    void wait(int);
     QTimer *Timer;
     QTimer *blinkTimer;
     QPalette redPalette;
     QPalette bluePalette;
     int noUser;
+
+    void flashIntensityNumber(int);
+    void wait(int);
+    void shutdown();
 
 
 private slots:

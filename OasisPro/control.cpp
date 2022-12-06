@@ -4,7 +4,6 @@ Control::Control() {
     powerOn = false;
     selectingSession = false;
     intensity = 1;
-    userId = 1000;
     numUsers = 0;
     currentUser = "";
 }
@@ -58,4 +57,12 @@ User* Control::getUser(QString name) {
         }
     }
     return NULL;
+}
+
+void Control::reset() {
+    powerOn = false;
+    selectingSession = false;
+    intensity = 1;
+    currentUser = "";
+    currentSession = NULL;
 }

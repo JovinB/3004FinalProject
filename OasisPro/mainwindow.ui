@@ -349,7 +349,7 @@
    </widget>
    <widget class="QProgressBar" name="progressBar">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -405,7 +405,7 @@
     </widget>
     <widget class="QPushButton" name="rechargeButton">
      <property name="enabled">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="geometry">
       <rect>

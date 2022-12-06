@@ -45,43 +45,46 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::powerButtonPressed() {
-    if(!control->isPowerOn()) {
-        control->turnOn();
-        control->startSelectingSession();
+    if(ui->progressBar->value() != 0) {
+        if(!control->isPowerOn()) {
+            control->turnOn();
+            control->startSelectingSession();
 
-        ui->upButton->setEnabled(true);
-        ui->downButton->setEnabled(true);
-        ui->selectButton->setEnabled(true);
-        ui->rechargeButton->setEnabled(true);
-        ui->skinCheckBox->setEnabled(true);
-        ui->selectUser->setEnabled(true);
-        ui->saveRecordButton->setEnabled(true);
-        ui->userDropdown->setEnabled(true);
-        ui->progressBar->setEnabled(true);
-        ui->addUserButton->setEnabled(true);
-        ui->endSessionButton->setEnabled(true);
+            ui->upButton->setEnabled(true);
+            ui->downButton->setEnabled(true);
+            ui->selectButton->setEnabled(true);
+            ui->skinCheckBox->setEnabled(true);
+            ui->selectUser->setEnabled(true);
+            ui->saveRecordButton->setEnabled(true);
+            ui->userDropdown->setEnabled(true);
+            ui->addUserButton->setEnabled(true);
+            ui->endSessionButton->setEnabled(true);
 
-        ui->powerLabel->setStyleSheet("background-color: green;");
-        ui->twentyMin->setStyleSheet("background-color: red;");
-        ui->fortyfiveMin->setStyleSheet("background-color: green;");
-        ui->userDes->setStyleSheet("background-color: green;");
-        ui->delta->setStyleSheet("background-color: red;");
-        ui->theta->setStyleSheet("background-color: green;");
-        ui->alpha->setStyleSheet("background-color: green;");
-        ui->beta1->setStyleSheet("background-color: green;");
-    }
-    else if(control->isSelectingSession()) {
-        if(ui->twentyMin->styleSheet() == "background-color: red;") {
-            ui->twentyMin->setStyleSheet("background-color: green;");
-            ui->fortyfiveMin->setStyleSheet("background-color: red;");
-        }
-        else if(ui->fortyfiveMin->styleSheet() == "background-color: red;") {
+            ui->powerLabel->setStyleSheet("background-color: green;");
+            ui->twentyMin->setStyleSheet("background-color: red;");
             ui->fortyfiveMin->setStyleSheet("background-color: green;");
-            ui->userDes->setStyleSheet("background-color: red;");
+            ui->userDes->setStyleSheet("background-color: green;");
+            ui->delta->setStyleSheet("background-color: red;");
+            ui->theta->setStyleSheet("background-color: green;");
+            ui->alpha->setStyleSheet("background-color: green;");
+            ui->beta1->setStyleSheet("background-color: green;");
+        }
+        else if(control->isSelectingSession()) {
+            if(ui->twentyMin->styleSheet() == "background-color: red;") {
+                ui->twentyMin->setStyleSheet("background-color: green;");
+                ui->fortyfiveMin->setStyleSheet("background-color: red;");
+            }
+            else if(ui->fortyfiveMin->styleSheet() == "background-color: red;") {
+                ui->fortyfiveMin->setStyleSheet("background-color: green;");
+                ui->userDes->setStyleSheet("background-color: red;");
+            }
+            else {
+                ui->userDes->setStyleSheet("background-color: green;");
+                ui->twentyMin->setStyleSheet("background-color: red;");
+            }
         }
         else {
-            ui->userDes->setStyleSheet("background-color: green;");
-            ui->twentyMin->setStyleSheet("background-color: red;");
+            shutdown();
         }
     }
 }
@@ -255,6 +258,9 @@ void MainWindow:: recharge(){
 
 void MainWindow:: depleteBattery(){
     ui->progressBar->setValue((ui->progressBar->value())-1);
+    if(ui->progressBar->value() == 0) {
+        shutdown();
+    }
     if(!blinkTimer->isActive() && ui->progressBar->value() < 30) {
         blinkTimer->start();
     }
@@ -287,4 +293,32 @@ void MainWindow::saveRecord() {
     User* user = control->getUser(control->getCurrentUser());
     Record* new_record = new Record(user->getNumRecords()+1, control->getCurrentSession()->getName(),0,0);
     user->addRecord(new_record);
+}
+
+void MainWindow::shutdown() {
+    control->reset();
+
+    ui->upButton->setEnabled(false);
+    ui->downButton->setEnabled(false);
+    ui->selectButton->setEnabled(false);
+    ui->skinCheckBox->setChecked(false);
+    ui->skinCheckBox->setEnabled(false);
+    ui->selectUser->setEnabled(false);
+    ui->saveRecordButton->setEnabled(false);
+    ui->userDropdown->setEnabled(false);
+    ui->addUserButton->setEnabled(false);
+    ui->endSessionButton->setEnabled(false);
+
+    ui->powerLabel->setStyleSheet("");
+    ui->twentyMin->setStyleSheet("");
+    ui->fortyfiveMin->setStyleSheet("");
+    ui->userDes->setStyleSheet("");
+    ui->delta->setStyleSheet("");
+    ui->theta->setStyleSheet("");
+    ui->alpha->setStyleSheet("");
+    ui->beta1->setStyleSheet("");
+
+    Timer->stop();
+    Timer->setInterval(1700);
+    blinkTimer->stop();
 }
