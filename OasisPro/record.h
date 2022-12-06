@@ -8,10 +8,10 @@ using namespace std;
 
 class Record {
 public:
-    Record(int,QString,QString,int,int); // const QDateTime&
+    Record(QString,QString,QString,int,int); // const QDateTime&
 
     // getters
-    int getRecordId();
+    QString getRecordName();
     QString getSessionName();
     QString getSessionGroup();
     int getDuration();
@@ -21,7 +21,7 @@ public:
     // void setIntensityLevel(int newIntensity);
 
 private:
-    int recordId;
+    QString recordName;
     QString sessionName;
     QString sessionGroup;
     int duration;

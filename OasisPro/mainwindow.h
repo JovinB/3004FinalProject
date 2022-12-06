@@ -43,5 +43,6 @@ private slots:
     void addUser();
     void currentUser();
     void saveRecord();
+    void endSession();
 };
 #endif // MAINWINDOW_H

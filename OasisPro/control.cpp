@@ -61,7 +61,11 @@ User* Control::getUser(QString name) {
 
 void Control::saveRecord(int duration) {
     User* user = getUser(currentUser);
-    Record* new_record = new Record(user->getNumRecords()+1, getCurrentSession()->getName(), getCurrentSession()->getGroupName(),duration,getIntensity());
+    QString sessionName = getCurrentSession()->getName();
+    QString sessionGroup = getCurrentSession()->getGroupName();
+    QString s = QString::number(user->getNumRecords()+1);
+    QString recordName = sessionGroup + sessionName + s;
+    Record* new_record = new Record(recordName, sessionName, sessionGroup,duration,getIntensity());
     user->addRecord(new_record);
 }
 

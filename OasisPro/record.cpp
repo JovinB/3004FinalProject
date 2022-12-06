@@ -1,18 +1,18 @@
 #include "record.h"
 #include <QDebug>
 
-Record::Record(int recordId, QString sessionName, QString sessionGroup, int duration, int intensityLevel) {
-    this->recordId = recordId;
+Record::Record(QString recordName, QString sessionName, QString sessionGroup, int duration, int intensityLevel) {
+    this->recordName = recordName;
     this->sessionName = sessionName;
     this->sessionGroup = sessionGroup;
     this->duration = duration;
     this->intensityLevel = intensityLevel;
-    qDebug() << "RecordId: " << recordId <<"Session Name: " << sessionName <<"Session Group: " << sessionGroup << "Duration: " << duration << "Intensity: " << intensityLevel;
+    qDebug() << "RecordName: " << recordName <<"Session Name: " << sessionName <<"Session Group: " << sessionGroup << "Duration: " << duration << "Intensity: " << intensityLevel;
 }
 
 
 // getters
-int Record::getRecordId() { return recordId; }
+QString Record::getRecordName() { return recordName; }
 QString Record::getSessionName() { return sessionName; }
 QString Record::getSessionGroup() { return sessionGroup; }
 int Record::getDuration() { return duration; }

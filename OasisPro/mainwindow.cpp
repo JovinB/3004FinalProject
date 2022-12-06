@@ -35,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->addUserButton, SIGNAL(released()), this, SLOT(addUser()));
     connect(ui->selectUser, SIGNAL(released()), this, SLOT(currentUser()));
     connect(ui->saveRecordButton, SIGNAL(released()), this, SLOT(saveRecord()));
+    connect(ui->endSessionButton,SIGNAL(released()), this, SLOT(endSession()));
 
 
 }
@@ -292,6 +293,10 @@ void MainWindow::currentUser() {
     ui->userDropdown->setEnabled(false);
     ui->addUserButton->setEnabled(false);
     ui->selectButton->setEnabled(true);
+
+    ui->recordDropdown->setEnabled(true);
+    ui->selectRecord->setEnabled(true);
+
 }
 
 void MainWindow::saveRecord() {
@@ -326,3 +331,13 @@ void MainWindow::shutdown() {
     Timer->setInterval(1700);
     blinkTimer->stop();
 }
+
+void MainWindow::endSession(){
+    for (int i = 8; i > 0; i--){
+         flashIntensityNumber(i);
+    }
+    shutdown();
+}
+
+
+
