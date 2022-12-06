@@ -6,7 +6,6 @@ Record::Record(QString recordName, QString sessionName, QString sessionGroup, in
     this->sessionGroup = sessionGroup;
     this->duration = duration;
     this->intensityLevel = intensityLevel;
-    qDebug() << "RecordName: " << recordName <<"Session Name: " << sessionName <<"Session Group: " << sessionGroup << "Duration: " << duration << "Intensity: " << intensityLevel;
 }
 
 

@@ -163,6 +163,8 @@ void MainWindow::selectButtonPressed() {
     ui->endSessionButton->setEnabled(true);
     ui->saveRecordButton->setEnabled(true);
     ui->selectUser->setEnabled(false);
+    ui->selectRecord->setEnabled(false);
+    ui->recordDropdown->setEnabled(false);
     sessionTimer.start();
 
     if(ui->twentyMin->styleSheet() == "background-color: red;") {
@@ -295,13 +297,14 @@ void MainWindow::currentUser() {
     ui->addUserButton->setEnabled(false);
     ui->selectButton->setEnabled(true);
 
-    ui->recordDropdown->setEnabled(true);
-    ui->selectRecord->setEnabled(true);
-
     User* currUser = control->getUser(control->getCurrentUser());
-    QVector<Record*> records = currUser->getRecords();
-    for(int i = 0; i < currUser->getNumRecords(); i++) {
-        ui->recordDropdown->addItem(records[i]->getRecordName());
+    if(currUser->getNumRecords() != 0) {
+        ui->recordDropdown->setEnabled(true);
+        ui->selectRecord->setEnabled(true);
+        QVector<Record*> records = currUser->getRecords();
+        for(int i = 0; i < currUser->getNumRecords(); i++) {
+            ui->recordDropdown->addItem(records[i]->getRecordName());
+        }
     }
 }
 
@@ -313,6 +316,8 @@ void MainWindow::selectRecord() {
     Record* currRecord = control->fetchRecord(ui->recordDropdown->currentText());
     highlightSessionGroup(currRecord->getSessionGroup());
     highlightSessionName(currRecord->getSessionName());
+    control->setIntensity(currRecord->getIntensityLevel());
+    flashIntensityNumber(currRecord->getIntensityLevel());
 }
 
 void MainWindow::shutdown() {
@@ -355,7 +360,6 @@ void MainWindow::endSession(){
 }
 
 void MainWindow::highlightSessionGroup(QString groupName) {
-    qDebug() << groupName;
     if(groupName == "twentyMin") {
         ui->twentyMin->setStyleSheet("background-color: red;");
         ui->fortyfiveMin->setStyleSheet("background-color: green;");
@@ -374,7 +378,6 @@ void MainWindow::highlightSessionGroup(QString groupName) {
 }
 
 void MainWindow::highlightSessionName(QString sessionName) {
-    qDebug() << sessionName;
     if(sessionName == "delta") {
         ui->delta->setStyleSheet("background-color: red;");
         ui->theta->setStyleSheet("background-color: green;");
