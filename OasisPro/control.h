@@ -18,6 +18,7 @@ public:
     Record* fetchRecord(QString);
     QString getCurrentUser();
     Session* getCurrentSession();
+    QString getConnectionLevel();
 
 
     // setters
@@ -28,6 +29,7 @@ public:
     void setIntensity(int);
     void setCurrentUser(QString);
     void setCurrentSession(QString,QString);
+    void setConnectionLevel(QString);
 
     bool addUser(QString);
     void reset();
@@ -43,6 +45,7 @@ private:
     int numUsers;
     QString currentUser;
     Session* currentSession;
+    QString connectionLevel;
 
 
 };

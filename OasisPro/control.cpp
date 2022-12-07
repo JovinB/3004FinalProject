@@ -6,6 +6,7 @@ Control::Control() {
     intensity = 1;
     numUsers = 0;
     currentUser = "";
+    connectionLevel = "";
 }
 
 // getters
@@ -21,6 +22,8 @@ int Control::getNumUsers() { return numUsers; }
 QString Control::getCurrentUser() { return currentUser; }
 
 Session* Control::getCurrentSession() { return currentSession; }
+
+QString Control::getConnectionLevel() { return connectionLevel; }
 
 User* Control::getUser(QString name) {
     for(int i = 0; i < numUsers; i++){
@@ -52,6 +55,8 @@ void Control::startSelectingSession() { selectingSession = true; }
 void Control::stopSelectingSession() { selectingSession = false; }
 
 void Control::setIntensity(int level) { intensity = level; }
+
+void Control::setConnectionLevel(QString connection) { connectionLevel = connection; }
 
 void Control::setCurrentUser(QString name) {
     currentUser = name;

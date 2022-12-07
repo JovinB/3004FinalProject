@@ -409,7 +409,7 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>110</x>
+       <x>20</x>
        <y>50</y>
        <width>131</width>
        <height>25</height>
@@ -425,14 +425,75 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>70</x>
-       <y>100</y>
-       <width>211</width>
+       <x>20</x>
+       <y>90</y>
+       <width>131</width>
        <height>23</height>
       </rect>
      </property>
      <property name="text">
       <string>Connected to Skin</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>50</y>
+       <width>111</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Connection Level</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="excellentCheckBox">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>80</y>
+       <width>82</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Excellent</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="okayCheckBox">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>110</y>
+       <width>82</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Okay</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="noneCheckBox">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>140</y>
+       <width>82</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>None</string>
      </property>
     </widget>
    </widget>
@@ -566,6 +627,38 @@
     </property>
     <property name="text">
      <string>Select Record</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="connectionLevelTitle">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>290</y>
+      <width>131</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="connectionLabel">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>320</y>
+      <width>131</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
   </widget>

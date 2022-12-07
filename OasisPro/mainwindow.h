@@ -31,6 +31,7 @@ private:
     void shutdown();
     void highlightSessionGroup(QString);
     void highlightSessionName(QString);
+    void displayConnection(bool);
 
 
 private slots:
@@ -47,5 +48,8 @@ private slots:
     void saveRecord();
     void selectRecord();
     void endSession();
+    void excellentConnectionUpdate();
+    void okayConnectionUpdate();
+    void noneConnectionUpdate();
 };
 #endif // MAINWINDOW_H

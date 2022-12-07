@@ -31,14 +31,16 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->downButton, SIGNAL(released()), this, SLOT(downButtonPressed()));
     connect(ui->selectButton, SIGNAL(released()), this, SLOT(selectButtonPressed()));
     connect(ui->rechargeButton, SIGNAL(released()), this, SLOT(recharge()));
-    connect(ui->skinCheckBox, SIGNAL(stateChanged(int)), this, SLOT(skinCheckBoxUpdate()));
     connect(ui->addUserButton, SIGNAL(released()), this, SLOT(addUser()));
     connect(ui->selectUser, SIGNAL(released()), this, SLOT(currentUser()));
     connect(ui->saveRecordButton, SIGNAL(released()), this, SLOT(saveRecord()));
     connect(ui->endSessionButton,SIGNAL(released()), this, SLOT(endSession()));
     connect(ui->selectRecord,SIGNAL(released()), this, SLOT(selectRecord()));
 
-
+    connect(ui->skinCheckBox, SIGNAL(stateChanged(int)), this, SLOT(skinCheckBoxUpdate()));
+    connect(ui->excellentCheckBox, SIGNAL(stateChanged(int)), this, SLOT(excellentConnectionUpdate()));
+    connect(ui->okayCheckBox, SIGNAL(stateChanged(int)), this, SLOT(okayConnectionUpdate()));
+    connect(ui->noneCheckBox, SIGNAL(stateChanged(int)), this, SLOT(noneConnectionUpdate()));
 }
 
 MainWindow::~MainWindow()
@@ -57,6 +59,10 @@ void MainWindow::powerButtonPressed() {
             ui->skinCheckBox->setEnabled(true);
             ui->userDropdown->setEnabled(true);
             ui->addUserButton->setEnabled(true);
+            ui->excellentCheckBox->setEnabled(true);
+            ui->okayCheckBox->setEnabled(true);
+            ui->noneCheckBox->setEnabled(true);
+            ui->excellentCheckBox->setChecked(true);
 
             if(control->getNumUsers() > 0) { ui->selectUser->setEnabled(true); }
 
@@ -156,42 +162,49 @@ void MainWindow::downButtonPressed() {
 }
 
 void MainWindow::selectButtonPressed() {
-    QString sessionName;
-    QString groupName;
-    control->stopSelectingSession();
-    ui->selectButton->setEnabled(false);
-    ui->endSessionButton->setEnabled(true);
-    ui->saveRecordButton->setEnabled(true);
-    ui->selectUser->setEnabled(false);
-    ui->selectRecord->setEnabled(false);
-    ui->recordDropdown->setEnabled(false);
-    sessionTimer.start();
+    displayConnection(true);
 
-    if(ui->twentyMin->styleSheet() == "background-color: red;") {
-        groupName = "twentyMin";
-    }
-    else if(ui->fortyfiveMin->styleSheet() == "background-color: red;") {
-        groupName = "fortyfiveMin";
-    }
-    else {
-        groupName = "userDesigned";
-    }
+    if(control->getConnectionLevel() != "No Connection") {
+        QString sessionName;
+        QString groupName;
+        control->stopSelectingSession();
+        ui->selectButton->setEnabled(false);
+        ui->endSessionButton->setEnabled(true);
+        ui->saveRecordButton->setEnabled(true);
+        ui->selectUser->setEnabled(false);
+        ui->selectRecord->setEnabled(false);
+        ui->recordDropdown->setEnabled(false);
+        ui->excellentCheckBox->setEnabled(false);
+        ui->okayCheckBox->setEnabled(false);
+        ui->noneCheckBox->setEnabled(false);
 
-    if(ui->delta->styleSheet() == "background-color: red;") {
-        sessionName = "delta";
-    }
-    else if(ui->theta->styleSheet() == "background-color: red;") {
-        sessionName = "theta";
-    }
-    else if(ui->alpha->styleSheet() == "background-color: red;") {
-        sessionName = "alpha";
-    }
-    else {
-        sessionName = "beta1";
-    }
+        if(ui->twentyMin->styleSheet() == "background-color: red;") {
+            groupName = "twentyMin";
+        }
+        else if(ui->fortyfiveMin->styleSheet() == "background-color: red;") {
+            groupName = "fortyfiveMin";
+        }
+        else {
+            groupName = "userDesigned";
+        }
 
-    control->setCurrentSession(sessionName, groupName);
-    Timer->start();
+        if(ui->delta->styleSheet() == "background-color: red;") {
+            sessionName = "delta";
+        }
+        else if(ui->theta->styleSheet() == "background-color: red;") {
+            sessionName = "theta";
+        }
+        else if(ui->alpha->styleSheet() == "background-color: red;") {
+            sessionName = "alpha";
+        }
+        else {
+            sessionName = "beta1";
+        }
+
+        sessionTimer.start();
+        Timer->start();
+        control->setCurrentSession(sessionName, groupName);
+    }
 }
 
 void MainWindow::skinCheckBoxUpdate() {
@@ -335,6 +348,14 @@ void MainWindow::shutdown() {
     ui->endSessionButton->setEnabled(false);
     ui->selectRecord->setEnabled(false);
     ui->recordDropdown->setEnabled(false);
+
+    ui->excellentCheckBox->setChecked(false);
+    ui->okayCheckBox->setChecked(false);
+    ui->noneCheckBox->setChecked(false);
+    ui->excellentCheckBox->setEnabled(false);
+    ui->okayCheckBox->setEnabled(false);
+    ui->noneCheckBox->setEnabled(false);
+
     ui->currentUserText->setText("");
     ui->recordDropdown->clear();
 
@@ -346,6 +367,8 @@ void MainWindow::shutdown() {
     ui->theta->setStyleSheet("");
     ui->alpha->setStyleSheet("");
     ui->beta1->setStyleSheet("");
+
+    displayConnection(false);
 
     Timer->stop();
     Timer->setInterval(1700);
@@ -404,4 +427,60 @@ void MainWindow::highlightSessionName(QString sessionName) {
     }
 }
 
+void MainWindow::excellentConnectionUpdate() {
+    if(ui->excellentCheckBox->isChecked()) {
+        control->setConnectionLevel("Excellent Connection");
+        ui->excellentCheckBox->setEnabled(false);
+        ui->okayCheckBox->setChecked(false);
+        ui->noneCheckBox->setChecked(false);
+    }
+    else {
+        ui->excellentCheckBox->setEnabled(true);
+    }
+}
 
+void MainWindow::okayConnectionUpdate() {
+    if(ui->okayCheckBox->isChecked()) {
+        control->setConnectionLevel("Okay Connection");
+        ui->okayCheckBox->setEnabled(false);
+        ui->excellentCheckBox->setChecked(false);
+        ui->noneCheckBox->setChecked(false);
+    }
+    else {
+        ui->okayCheckBox->setEnabled(true);
+    }
+}
+
+void MainWindow::noneConnectionUpdate() {
+    if(ui->noneCheckBox->isChecked()) {
+        control->setConnectionLevel("No Connection");
+        ui->noneCheckBox->setEnabled(false);
+        ui->excellentCheckBox->setChecked(false);
+        ui->okayCheckBox->setChecked(false);
+    }
+    else {
+        ui->noneCheckBox->setEnabled(true);
+    }
+}
+
+void MainWindow::displayConnection(bool flag) {
+    if(flag) {
+        QString connectionLevel = control->getConnectionLevel();
+        ui->connectionLevelTitle->setText("Connection Level:");
+        ui->connectionLabel->setText(connectionLevel);
+        if(connectionLevel == "Excellent Connection") {
+            ui->connectionLabel->setStyleSheet("background-color: green;");
+        }
+        else if(connectionLevel == "Okay Connection") {
+            ui->connectionLabel->setStyleSheet("background-color: yellow;");
+        }
+        else {
+            ui->connectionLabel->setStyleSheet("background-color: red;");
+        }
+    }
+    else {
+        ui->connectionLevelTitle->setText("");
+        ui->connectionLabel->setText("");
+        ui->connectionLabel->setStyleSheet("");
+    }
+}
