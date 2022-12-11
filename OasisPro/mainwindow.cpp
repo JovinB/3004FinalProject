@@ -329,6 +329,17 @@ void MainWindow::selectRecord() {
     Record* currRecord = control->fetchRecord(ui->recordDropdown->currentText());
     highlightSessionGroup(currRecord->getSessionGroup());
     highlightSessionName(currRecord->getSessionName());
+
+    if(control->getIntensity() > currRecord->getIntensityLevel()) {
+        for(int i = control->getIntensity(); i > currRecord->getIntensityLevel(); i--) {
+            Timer->setInterval((Timer->interval()) + 200);
+        }
+    }
+    else {
+        for(int i = control->getIntensity(); i < currRecord->getIntensityLevel(); i++) {
+            Timer->setInterval((Timer->interval()) - 200);
+        }
+    }
     control->setIntensity(currRecord->getIntensityLevel());
     flashIntensityNumber(currRecord->getIntensityLevel());
 }
